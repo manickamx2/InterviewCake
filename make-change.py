@@ -5,7 +5,17 @@ def change_possibilities(amount, denominations):
     if amount == 0: # there's only one way to make change of zero cents
         return 1
     else:
-        
+        ways_to_reach_n_cents = [0] * (amount + 1)
+        ways_to_reach_n_cents[0] = 1 # there's 1 way to make 0 cents.
+
+        for coin in denominations: # loop through the possible coins to use
+            for amount in range(coin, amount + 1): # these are the indices of ways_to_reach_n_cents.
+                # we know the amount of ways to get all the change less than the current amount with the given coin
+                remainder = amount - coin
+                ways_to_reach_n_cents[amount] += ways_to_reach_n_cents[remainder]
+
+        return ways_to_reach_n_cents[amount]
+
 
 # Tests
 class Test(unittest.TestCase):
